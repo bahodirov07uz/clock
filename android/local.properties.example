@@ -1,0 +1,4 @@
+# Ushbu faylni "local.properties" deb nomlab, quyidagi yo'llarni
+# o'zingizning kompyuteringizga moslab to'ldiring:
+sdk.dir=/Users/username/Library/Android/sdk
+flutter.sdk=/Users/username/development/flutter
