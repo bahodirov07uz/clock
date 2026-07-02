@@ -5,12 +5,13 @@ workflows:
     instance_type: linux_x2
     environment:
       flutter: stable
-      android_signing:
-        - redmi_clock_keystore   # Codemagic UI > Code signing > Android da yaratiladi
       vars:
         PACKAGE_NAME: "com.redmiclock.app"
-      groups:
-        - keystore_credentials    # CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, CM_KEY_PASSWORD shu yerda
+      # Haqiqiy keystore ulaganingizdan so'ng quyidagi 2 qatorni oching:
+      # android_signing:
+      #   - redmi_clock_keystore   # Codemagic UI > Code signing > Android'da qo'shilgan nom bilan BIR XIL bo'lishi shart
+      # groups:
+      #   - keystore_credentials    # CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, CM_KEY_PASSWORD shu yerda
 
     cache:
       cache_paths:
@@ -37,12 +38,7 @@ workflows:
         script: |
           flutter analyze || true
 
-      - name: Android versiya raqamini build raqamiga moslash
-        script: |
-          BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$PACKAGE_NAME" || echo 0) + 1))
-          sed -i "s/^version: .*/version: 1.0.0+${BUILD_NUMBER:-1}/" pubspec.yaml || true
-
-      - name: Release APK yig'ish (imzolangan)
+      - name: Release APK yig'ish
         script: |
           flutter build apk --release \
             --build-name=1.0.0 \
